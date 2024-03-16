@@ -1,0 +1,11 @@
+{
+  "color": [
+    {
+      "name": "start_window_background",
+      "value": "#FFFFFF"
+    },{
+      "name": "light_grey",
+      "value": "#D3D3D3"
+    }
+  ]
+}

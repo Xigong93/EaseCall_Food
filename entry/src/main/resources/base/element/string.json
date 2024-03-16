@@ -1,0 +1,32 @@
+{
+  "string": [
+    {
+      "name": "module_desc",
+      "value": "module description"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "description"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "label"
+    },
+    {
+      "name": "LogText",
+      "value": "Welcome to login EasyCall Food"
+    },
+    {
+      "name": "user_privacy_title",
+      "value": "Welcome to use EasyCall Food"
+    },
+    {
+      "name": "agree_label",
+      "value": "Confirm"
+    },
+    {
+      "name": "disagree_label",
+      "value": "Cancel"
+    }
+  ]
+}
