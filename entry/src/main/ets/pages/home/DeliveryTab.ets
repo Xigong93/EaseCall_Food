@@ -12,11 +12,22 @@ import FoodCell from '../food/FoodCell'
 @Component
 export default struct DeliveryTab {
   build() {
-    Column({ space: 20 }) {
-      SearchBox()
-      functionArea()
-      banner()
-      FoodCell()
+    Column() {
+      List({ space: 20 }) {
+        ListItem() {
+          Column({ space: 20 }) {
+            SearchBox()
+            functionArea()
+            banner()
+          }
+        }
+
+        ForEach(foods, (item: Food) => {
+          ListItem() {
+            FoodCell()
+          }
+        })
+      }
     }
     .width("100%")
     .height("100%")
@@ -67,21 +78,13 @@ function banner() {
   Swiper() { //轮播
     ForEach(bannerImg, (img: Resource) => {
       Image(img)
+        .borderRadius(8)
     })
   }
+  .autoPlay(true)
   .width("100%")
   .height(140)
   .borderRadius(8)
 }
 
 const foods = appApi.getFoods()
-
-@Builder function foodList() {
-  List() {
-    ForEach(foods, (item: Food) => {
-      ListItem() {
-        FoodCell()
-      }
-    })
-  }
-}

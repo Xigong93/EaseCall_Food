@@ -15,13 +15,11 @@ export default struct FoodCell {
         .borderRadius(6)
       this.textArea()
     }
-    .padding({ left: 10, right: 10 })
+    // .padding({ left: 10, right: 10 })
     .width('100%')
-    .height(100)
+    .height(80)
     .backgroundColor('#fff')
     .borderRadius(20)
-    .padding(10)
-    .height(100)
   }
 
   @Builder
@@ -45,7 +43,7 @@ export default struct FoodCell {
           .textAlign(TextAlign.Center)
           .fontSize(12)
           .fontColor(Color.White)
-          .margin({ left: 115 })
+          .margin({ left: 90 })
           .borderRadius(13)
           .backgroundColor(primary)
 
