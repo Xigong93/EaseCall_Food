@@ -1,12 +1,7 @@
 {
   "src": [
-    "pages/MainPage",
-    "pages/LogOrRegister",
-    "pages/Retrieve",
-    "pages/TakeoutPage",
-    "pages/DrugPage",
-    "pages/StorePage",
-    "pages/FruitPage",
-    "pages/WelcomePage"
+    "pages/welcome/WelcomePage",
+    "pages/login/LoginPage",
+    "pages/home/HomePage"
   ]
 }
