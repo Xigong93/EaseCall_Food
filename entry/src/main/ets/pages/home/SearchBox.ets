@@ -3,13 +3,18 @@
 export default struct SearchBox {
   build() {
     Row() {
-      Search({ placeholder: '搜索' })
-        .textFont({ size: 18 })
-        .width('100%')
-        .focusable(false)
+      Image($r('app.media.home_search'))
+        .width(22)
+        .width(22)
+      Text('搜索')
+        .fontSize(18)
+        .margin({ left: 8 })
+        .fontColor("#dcdcdc")
     }
+    .padding({ left: 10, right: 10 })
     .width('100%')
-    .height(50)
-    .margin({ top: 20 })
+    .height(46)
+    .backgroundColor(Color.White)
+    .borderRadius(23)
   }
 }

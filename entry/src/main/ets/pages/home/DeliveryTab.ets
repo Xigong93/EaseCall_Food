@@ -6,6 +6,9 @@ import router from '@ohos.router'
 import appApi from '../../api/AppApi'
 import Food from '../food/Food'
 import FoodCell from '../food/FoodCell'
+import HomeTitleBar from './HomeTitltBar'
+import HorizontalLine from '../../widget/HorizontalLine'
+import { pageBackground } from '../../style/AppColor'
 
 
 @Preview
@@ -13,13 +16,11 @@ import FoodCell from '../food/FoodCell'
 export default struct DeliveryTab {
   build() {
     Column() {
+      HomeTitleBar({ title: "外卖" })
+      HorizontalLine()
       List({ space: 20 }) {
         ListItem() {
-          Column({ space: 20 }) {
-            SearchBox()
-            functionArea()
-            banner()
-          }
+          this.header()
         }
 
         ForEach(foods, (item: Food) => {
@@ -28,11 +29,23 @@ export default struct DeliveryTab {
           }
         })
       }
+      .padding({ left: PagePadding, right: PagePadding })
+
     }
+    .backgroundColor(pageBackground)
     .width("100%")
     .height("100%")
-    .padding({ left: PagePadding, right: PagePadding })
 
+  }
+
+  @Builder
+  header() {
+    Column({ space: 20 }) {
+      SearchBox()
+        .margin({ top: 15 })
+      functionArea()
+      banner()
+    }
   }
 }
 
@@ -40,12 +53,14 @@ export default struct DeliveryTab {
  * 功能区
  */
 @Builder function functionArea() {
-  Row({ space: 30 }) {
+  Row() {
     IconButton("美食", $r('app.media.icon_sandwich'), '')
     IconButton("蔬菜水果", $r('app.media.icon_fruit'), '')
     IconButton("看病买药", $r('app.media.icon_drug'), '')
     IconButton("品质百货", $r('app.media.icon_supermarket'), '')
   }
+  .width("100%")
+  .justifyContent(FlexAlign.SpaceAround)
 }
 
 @Builder

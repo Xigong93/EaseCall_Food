@@ -17,9 +17,10 @@ export default struct FoodCell {
     }
     // .padding({ left: 10, right: 10 })
     .width('100%')
-    .height(80)
+    .height(100)
+    .padding({ left: 12, right: 12 })
     .backgroundColor('#fff')
-    .borderRadius(20)
+    .borderRadius(6)
   }
 
   @Builder
@@ -49,7 +50,7 @@ export default struct FoodCell {
 
       }
     }
-    .height("100%")
+    .height(80)
     .margin({ left: 10 })
     .alignItems(HorizontalAlign.Start)
     .justifyContent(FlexAlign.SpaceBetween)

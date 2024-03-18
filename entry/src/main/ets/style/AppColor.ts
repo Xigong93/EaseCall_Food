@@ -8,6 +8,10 @@ export const primary = "#ffffa636"
 export const auxiliary = "#ffddaf"
 
 /**
+ * 页面背景色
+ */
+export const pageBackground = "#f4f4f4"
+/**
  * 分割线
  */
-export const divider = "#dcdcdc"
+export const divider = "#f3f3f3"
