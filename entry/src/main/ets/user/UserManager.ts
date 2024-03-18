@@ -2,34 +2,34 @@ import dataPreferences from '@ohos.data.preferences';
 import { getUiAbility } from '../utils/UiAbilityHolder'
 import Logger from '../utils/Logger'
 
+const USER_KEY = "user"
+
 class UserDao {
   private async getPreference(): Promise<dataPreferences.Preferences> {
     let context = getUiAbility().context
-    return await dataPreferences.getPreferences(context, "user")
+    return await dataPreferences.getPreferences(context, USER_KEY)
   }
 
   async save(user: User) {
     const pref = await this.getPreference()
-    await pref.put("uid", user.id)
-    await pref.put("name", user.name)
-    await pref.put("token", user.token)
+    await pref.put(USER_KEY, JSON.stringify(user))
     await pref.flush()
   }
 
   async getUser(): Promise<User | null> {
     const pref = await this.getPreference()
-    const id = await pref.get("uid", "")
-    const name = await pref.get("name", "")
-    const token = await pref.get("token", "")
-
-    if (!id || !name || !token) {
+    const userStr = await pref.get(USER_KEY, "") as string
+    if (!userStr) {
       return null
     }
-    return {
-      id: id as string,
-      name: name as string,
-      token: token as string
+    try {
+      return JSON.parse(userStr) as User
+    } catch (e: any) {
+      console.log(e)
+      this.clear()
+      return null
     }
+
   }
 
   async clear() {
@@ -82,7 +82,7 @@ export const userManager = new UserManager()
 /**
  * 用户
  */
-export interface User {
+export class User {
   /**
    * 用户id
    */
