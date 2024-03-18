@@ -2,6 +2,8 @@
   "src": [
     "pages/welcome/WelcomePage",
     "pages/login/LoginPage",
-    "pages/home/HomePage"
+    "pages/home/HomePage",
+    "pages/order/OrderPage",
+    "pages/food/FoodListPage"
   ]
 }

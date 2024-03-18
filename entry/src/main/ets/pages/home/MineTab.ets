@@ -1,10 +1,19 @@
+import router from '@ohos.router'
 import { auxiliary, pageBackground, primary } from '../../style/AppColor'
 import { PagePadding } from '../../style/AppDimission'
+import { User, userManager } from '../../user/UserManager'
+import showToast from '../../utils/ToastUtil'
 import HorizontalLine from '../../widget/HorizontalLine'
 
 @Preview
 @Component
 export default struct MineTab {
+  private user?: User
+
+  async aboutToAppear() {
+    this.user = await userManager.getUser()
+  }
+
   build() {
     Column() {
       this.header()
@@ -14,6 +23,7 @@ export default struct MineTab {
         .width(120)
         .margin({ top: 60 })
         .backgroundColor(auxiliary)
+        .onClick(() => this.logout())
     }
     .width('100%')
     .height('100%')
@@ -22,18 +32,33 @@ export default struct MineTab {
 
   }
 
+  /**
+   * 退出登录
+   */
+  async logout() {
+    await userManager.logout()
+    router.replaceUrl({ url: 'pages/login/LoginPage' })
+  }
+
   @Builder
   header() {
     Row() {
+
       Image($r('app.media.mine_header'))
         .width(60)
         .height(60)
         .borderRadius(30)
-      Column() {
-        Text("姓名")
+
+
+      Column({ space: 10 }) {
+        Text(this.user ? this.user.name : "未登录")
+          .fontSize(16)
           .fontColor(Color.Black)
-        Text("ID:001")
+        Text(`ID:${this.user ? this.user.id : "0"}`)
+          .fontColor('#7a7a7a')
+          .fontSize(14)
       }
+      .alignItems(HorizontalAlign.Start)
       .margin({ left: 16 })
     }
     .width("100%")
@@ -43,13 +68,20 @@ export default struct MineTab {
   @Builder
   list() {
     Column() {
-      item("", "我的订单")
+      item($r("app.media.home_mine_order"), "我的订单", () => {
+        router.pushUrl({ url: 'pages/order/OrderPage' })
+
+      })
       this.listDivider()
-      item("", "清除缓存")
+      item($r("app.media.home_mine_clear"), "清除缓存", () => {
+        showToast("清除成功")
+      })
       this.listDivider()
-      item("", "软件版本")
+      appUpdate()
       this.listDivider()
-      item("", "关于我们")
+      item($r('app.media.home_mine_about'), "关于我们", () => {
+        showToast("简吃是一个大学生外卖平台，提供更实惠，更高品质的用餐体验")
+      })
     }
     .width('100%')
     .backgroundColor(Color.White)
@@ -63,10 +95,34 @@ export default struct MineTab {
   }
 }
 
+
 @Builder
-function item(icon: string, title: string) {
+function appUpdate() {
   Row() {
-    Image($r('app.media.home_mine_order'))
+    Image($r("app.media.home_mine_app_update"))
+      .width(22)
+      .width(22)
+    Text("软件更新")
+      .fontSize(12)
+      .margin({ left: 10 })
+    Blank()
+    Text("v1.0.0")
+      .fontSize(12)
+      .fontColor('#7a7a7a')
+    Image($r('app.media.home_mine_arrow'))
+      .width(22)
+      .width(22)
+  }
+  .padding({ left: PagePadding, right: PagePadding })
+  .width('100%')
+  .height(50)
+  .onClick(() => showToast("已是最新版本"))
+}
+
+@Builder
+function item(icon: Resource, title: string, onClick: () => void) {
+  Row() {
+    Image(icon)
       .width(22)
       .width(22)
     Text(title)
@@ -80,4 +136,5 @@ function item(icon: string, title: string) {
   .padding({ left: PagePadding, right: PagePadding })
   .width('100%')
   .height(50)
+  .onClick(onClick)
 }

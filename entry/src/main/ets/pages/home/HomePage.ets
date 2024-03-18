@@ -43,10 +43,10 @@ struct HomePage {
       .tabBar(this.TabBarItem("外卖", $r("app.media.home_deliv_0"), $r("app.media.home_deliv_1"), 0))
 
       // 购物车
-      TabContent() {
-        ShoppingCartTab()
-      }
-      .tabBar(this.TabBarItem("购物车", $r("app.media.home_car_0"), $r("app.media.home_car_1"), 1))
+      // TabContent() {
+      //   ShoppingCartTab()
+      // }
+      // .tabBar(this.TabBarItem("购物车", $r("app.media.home_car_0"), $r("app.media.home_car_1"), 1))
       // 我的
       TabContent() {
         MineTab()

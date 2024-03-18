@@ -68,13 +68,13 @@ function IconButton(text: string, icon: Resource, url: string) {
   Column({ space: 8 }) {
     Image(icon)
       .width(32)
-      .onClick(() => {
-        //路由页面
-        router.pushUrl({ url })
-      })
+
     Text(text)
       .fontSize(13)
-  }
+  }.onClick(() => {
+    //路由页面
+    router.pushUrl({ url: "pages/food/FoodListPage", params: { title: text } })
+  })
 }
 
 
@@ -94,11 +94,12 @@ function banner() {
     ForEach(bannerImg, (img: Resource) => {
       Image(img)
         .borderRadius(8)
+
     })
   }
   .autoPlay(true)
   .width("100%")
-  .height(140)
+  .height(120)
   .borderRadius(8)
 }
 

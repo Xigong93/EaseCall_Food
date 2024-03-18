@@ -15,7 +15,6 @@ export default struct FoodCell {
         .borderRadius(6)
       this.textArea()
     }
-    // .padding({ left: 10, right: 10 })
     .width('100%')
     .height(100)
     .padding({ left: 12, right: 12 })
@@ -37,6 +36,7 @@ export default struct FoodCell {
         Text(`￥${this.food.price}`)
           .fontSize(16)
           .fontColor(Color.Red)
+        Blank(80)
 
         Text("购买")
           .width(56)
@@ -44,15 +44,16 @@ export default struct FoodCell {
           .textAlign(TextAlign.Center)
           .fontSize(12)
           .fontColor(Color.White)
-          .margin({ left: 90 })
           .borderRadius(13)
           .backgroundColor(primary)
-
       }
+      // .width(1)
+      // .width('100%')
     }
     .height(80)
     .margin({ left: 10 })
     .alignItems(HorizontalAlign.Start)
+    .alignRules({ right: { anchor: 'parent', align: HorizontalAlign.End } })
     .justifyContent(FlexAlign.SpaceBetween)
   }
 }
