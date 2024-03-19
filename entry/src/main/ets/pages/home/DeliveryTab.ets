@@ -5,9 +5,8 @@ import router from '@ohos.router'
 import appApi from '../../api/AppApi'
 import Food from '../food/Food'
 import FoodCell from '../food/FoodCell'
-import HomeTitleBar from './HomeTitltBar'
-import HorizontalLine from '../../widget/HorizontalLine'
 import { pageBackground } from '../../style/AppColor'
+import { openFoodDetailPage } from '../food/detail/FoodDetailPage'
 
 
 @Preview
@@ -15,8 +14,8 @@ import { pageBackground } from '../../style/AppColor'
 export default struct DeliveryTab {
   build() {
     Column() {
-      HomeTitleBar({ title: "外卖" })
-      HorizontalLine()
+      SearchBox()
+        .margin(PagePadding)
       List({ space: 20 }) {
         ListItem() {
           this.header()
@@ -27,7 +26,9 @@ export default struct DeliveryTab {
             FoodCell()
           }
         })
+        ListItem()
       }
+      .layoutWeight(1)
       .padding({ left: PagePadding, right: PagePadding })
 
     }
@@ -40,11 +41,11 @@ export default struct DeliveryTab {
   @Builder
   header() {
     Column({ space: 20 }) {
-      SearchBox()
-        .margin({ top: 15 })
+
       functionArea()
       banner()
     }
+    .margin({ top: 10 })
   }
 }
 
@@ -93,6 +94,7 @@ function banner() {
     ForEach(bannerImg, (img: Resource) => {
       Image(img)
         .borderRadius(8)
+        .onClick(() => openFoodDetailPage(appApi.getSampleFood()))
 
     })
   }

@@ -25,7 +25,9 @@ struct FoodListPage {
             FoodCell()
           }
         })
+        ListItem()
       }
+      .layoutWeight(1)
       .padding({ left: PagePadding, right: PagePadding })
 
     }

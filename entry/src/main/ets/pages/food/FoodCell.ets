@@ -1,4 +1,5 @@
 import { auxiliary, primary } from '../../style/AppColor'
+import { openFoodDetailPage } from './detail/FoodDetailPage'
 import Food from './Food'
 
 @Preview
@@ -17,9 +18,10 @@ export default struct FoodCell {
     }
     .width('100%')
     .height(100)
-    .padding({ left: 12, right: 12 })
+    .padding(12)
     .backgroundColor('#fff')
     .borderRadius(6)
+    .onClick(() => openFoodDetailPage(this.food))
   }
 
   @Builder
@@ -36,8 +38,9 @@ export default struct FoodCell {
         Text(`￥${this.food.price}`)
           .fontSize(16)
           .fontColor(Color.Red)
-        Blank(80)
+        // Blank(80)
 
+        Blank()
         Text("购买")
           .width(56)
           .height(26)
@@ -47,14 +50,13 @@ export default struct FoodCell {
           .borderRadius(13)
           .backgroundColor(primary)
       }
-      // .width(1)
-      // .width('100%')
+      .width('100%')
     }
-    .height(80)
+    .layoutWeight(1)
+    .height('100%')
     .margin({ left: 10 })
-    .alignItems(HorizontalAlign.Start)
-    .alignRules({ right: { anchor: 'parent', align: HorizontalAlign.End } })
     .justifyContent(FlexAlign.SpaceBetween)
+    .alignItems(HorizontalAlign.Start)
   }
 }
 

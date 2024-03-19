@@ -5,6 +5,7 @@
     "pages/home/HomePage",
     "pages/order/OrderPage",
     "pages/food/FoodListPage",
-    "pages/search/SearchPage"
+    "pages/search/SearchPage",
+    "pages/food/detail/FoodDetailPage"
   ]
 }
