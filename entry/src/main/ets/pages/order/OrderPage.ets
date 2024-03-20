@@ -3,8 +3,10 @@ import { divider, grayFontColor, pageBackground, primary } from '../../style/App
 import { PagePadding } from '../../style/AppDimission'
 import showToast from '../../utils/ToastUtil'
 import TitleBar from '../../widget/TitleBar'
+import { openFoodDetailPage } from '../food/detail/FoodDetailPage'
 import Food from '../food/Food'
 import OrderContentCard from './OrderContentCard'
+import openOrderDetail from './OrderDetailPage'
 
 export default function openOrderPage(food: Food) {
   router.pushUrl(
@@ -51,7 +53,12 @@ struct OrderPage {
       .type(ButtonType.Normal)
       .backgroundColor(primary)
       .borderRadius(8)
-      .onClick(() => showToast("支付成功"))
+      .onClick(() => this.paySuccess())
+  }
+
+  paySuccess() {
+    showToast("支付成功")
+    openOrderDetail("0")
   }
 }
 

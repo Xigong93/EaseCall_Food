@@ -2,6 +2,7 @@ import { pageBackground, primary } from '../../style/AppColor'
 import { PagePadding } from '../../style/AppDimission'
 import TitleBar from '../../widget/TitleBar'
 import Food from '../food/Food'
+import openOrderDetail from './OrderDetailPage'
 
 @Entry
 @Component
@@ -73,6 +74,7 @@ struct OrderCell {
     .padding({ left: 12, right: 12, top: 12, bottom: 12 })
     .backgroundColor('#fff')
     .borderRadius(6)
+    .onClick(() => openOrderDetail("a"))
 
   }
 
