@@ -7,6 +7,7 @@ import Food from '../food/Food'
 import FoodCell from '../food/FoodCell'
 import { pageBackground } from '../../style/AppColor'
 import { openFoodDetailPage } from '../food/detail/FoodDetailPage'
+import openFoodList from '../food/FoodListPage'
 
 
 @Preview
@@ -54,27 +55,24 @@ export default struct DeliveryTab {
  */
 @Builder function functionArea() {
   Row() {
-    IconButton("美食", $r('app.media.icon_sandwich'), '')
-    IconButton("蔬菜水果", $r('app.media.icon_fruit'), '')
-    IconButton("看病买药", $r('app.media.icon_drug'), '')
-    IconButton("品质百货", $r('app.media.icon_supermarket'), '')
+    IconButton("美食", $r('app.media.icon_sandwich'), $r('app.media.food_header'))
+    IconButton("蔬菜水果", $r('app.media.icon_fruit'), $r('app.media.fruit_header'))
+    IconButton("看病买药", $r('app.media.icon_drug'), $r('app.media.drag_header'))
+    IconButton("品质百货", $r('app.media.icon_supermarket'), $r('app.media.mark_header'))
   }
   .width("100%")
   .justifyContent(FlexAlign.SpaceAround)
 }
 
 @Builder
-function IconButton(text: string, icon: Resource, url: string) {
+function IconButton(text: string, icon: Resource, headerImg: Resource) {
   Column({ space: 8 }) {
     Image(icon)
       .width(32)
-
     Text(text)
       .fontSize(13)
-  }.onClick(() => {
-    //路由页面
-    router.pushUrl({ url: "pages/food/FoodListPage", params: { title: text } })
-  })
+  }
+  .onClick(() => openFoodList(text, headerImg))
 }
 
 

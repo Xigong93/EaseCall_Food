@@ -1,25 +1,45 @@
 import router from '@ohos.router'
+import image from '@ohos.multimedia.image'
 import appApi from '../../api/AppApi'
 import { pageBackground } from '../../style/AppColor'
 import { PagePadding } from '../../style/AppDimission'
 import TitleBar from '../../widget/TitleBar'
 import Food from './Food'
 import FoodCell from './FoodCell'
+import Logger from '../../utils/Logger'
+
+export default function openFoodList(title: string, image: Resource) {
+  const params = {
+    title, image
+  }
+  router.pushUrl({
+    url: "pages/food/FoodListPage", params
+  })
+}
+
+const logger = new Logger("商品列表")
 
 @Entry
 @Component
 struct FoodListPage {
-  title: string
+  getTitle(): string {
+    return router.getParams()["title"] ?? "美食"
+  }
 
-  aboutToAppear() {
-    this.title = router.getParams()["title"]
+  getImage(): Resource {
+    return router.getParams()["image"] ?? $r("app.media.food_header")
   }
 
   build() {
     Column() {
-      TitleBar({ title: this.title })
+      TitleBar({ title: this.getTitle() })
       List({ space: 15 }) {
         ListItem()
+        ListItem() {
+          Image(this.getImage())
+            .borderRadius(6)
+        }
+
         ForEach(foods, (item: Food) => {
           ListItem() {
             FoodCell()
