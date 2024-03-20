@@ -4,6 +4,8 @@
     "pages/login/LoginPage",
     "pages/home/HomePage",
     "pages/order/OrderPage",
+    "pages/order/MyOrderPage",
+    "pages/order/OrderDetailPage",
     "pages/food/FoodListPage",
     "pages/search/SearchPage",
     "pages/food/detail/FoodDetailPage"

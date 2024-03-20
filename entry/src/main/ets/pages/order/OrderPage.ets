@@ -1,28 +1,40 @@
-import { pageBackground, primary } from '../../style/AppColor'
+import router from '@ohos.router'
+import { divider, grayFontColor, pageBackground, primary } from '../../style/AppColor'
 import { PagePadding } from '../../style/AppDimission'
+import showToast from '../../utils/ToastUtil'
 import TitleBar from '../../widget/TitleBar'
 import Food from '../food/Food'
+import OrderContentCard from './OrderContentCard'
+
+export default function openOrderPage(food: Food) {
+  router.pushUrl(
+    {
+      url: "pages/order/OrderPage",
+      params: {
+        food
+      }
+    }
+  )
+}
 
 @Entry
 @Component
-export default struct OrderPage {
+struct OrderPage {
   build() {
     Column() {
-      TitleBar({ title: "我的订单" })
-      List({ space: 15 }) {
-        ListItem() {
-          OrderCell()
+      TitleBar({ title: "订单" })
+      Scroll() {
+        Column({ space: 14 }) {
+          AddressCard().margin({ top: 14 })
+          OrderContentCard()
+          PaymentCard()
+          this.payButton()
         }
-        .margin({ top: 20 })
+        .width('100%')
 
-        ListItem() {
-          OrderCell()
-        }
-
-        ListItem() {
-          OrderCell()
-        }
       }
+      .width('100%')
+      .layoutWeight(1)
       .padding({ left: PagePadding, right: PagePadding })
 
     }
@@ -30,71 +42,102 @@ export default struct OrderPage {
     .height('100%')
     .backgroundColor(pageBackground)
   }
-}
 
-class Order {
-  readonly food: Food
-  money: number
-  date: string
-}
-
-@Component
-struct OrderCell {
-  private order: Order = {
-    food: { name: "香辣炒虾尾", image: "app.media.food1", price: 68 },
-    money: 11,
-    date: '2024-03-15 20:02'
+  @Builder
+  payButton() {
+    Button("立即支付")
+      .width('100%')
+      .margin({ bottom: 40 })
+      .type(ButtonType.Normal)
+      .backgroundColor(primary)
+      .borderRadius(8)
+      .onClick(() => showToast("支付成功"))
   }
+}
 
+@Builder
+function cardTitle(label: string) {
+  Text(label)
+    .fontColor(Color.Black)
+    .fontSize(16)
+    .fontWeight(FontWeight.Medium)
+}
+
+@Preview
+@Component
+struct AddressCard {
   build() {
-
-    Column() {
-      Row() {
-        Text(`下单时间: ${(this.order.date)}`)
-          .fontSize(12)
-        Blank()
-        Text("配送中")
-          .fontSize(14)
-      }
-      .width('100%')
-
-      Row() {
-        Image($r("app.media.food1"))
-          .width(120)
-          .height(80)
-          .borderRadius(6)
-        this.textArea()
-      }
-      .width('100%')
-      .height(100)
-
+    Column({ space: 10 }) {
+      cardTitle("收货地址")
+      this.item("联系方式", "小明  18588886666")
+      Divider().backgroundColor(divider)
+      this.item("收货地址", "天津市河西区平江道62号")
     }
+    .padding(PagePadding)
+    .alignItems(HorizontalAlign.Start)
     .width('100%')
-    .padding({ left: 12, right: 12, top: 12, bottom: 12 })
-    .backgroundColor('#fff')
-    .borderRadius(6)
-
+    .backgroundColor(Color.White)
+    .borderRadius(8)
   }
 
   @Builder
-  textArea() {
-    Column() {
-      Text(this.order.food.name)
-        .textAlign(TextAlign.Start) //zu
-        .fontSize(12)
-        .fontWeight(FontWeight.Regular)
-      Text(`数量: 1`)
-        .fontSize(12)
-      Text(`共计: ￥${(this.order.money)}`)
-        .fontSize(12)
+  item(label: string, content: string) {
+    Row() {
 
-      // .width(1)
-      // .width('100%')
+      Text(label)
+        .fontColor(grayFontColor)
+        .fontSize(12)
+      TextInput({ text: content })
+        .fontColor(Color.Black)
+        .fontWeight(FontWeight.Medium)
+        .backgroundColor(Color.Transparent)
+        .fontSize(14)
     }
-    .height(80)
-    .margin({ left: 10 })
-    .alignItems(HorizontalAlign.Start)
-    .alignRules({ right: { anchor: 'parent', align: HorizontalAlign.End } })
-    .justifyContent(FlexAlign.SpaceBetween)
+    .width('100%')
+
   }
 }
+
+
+@Component
+struct PaymentCard {
+  @State
+  private selectedPayment: string = "wechat"
+
+  build() {
+    Column({ space: 14 }) {
+      cardTitle("支付方式")
+      this.payOption($r('app.media.order_wechat'), "微信", 'wechat')
+      Divider()
+        .margin({ left: 30 })
+      this.payOption($r('app.media.order_alipay'), "支付宝", 'alipay')
+
+    }
+    .width('100%')
+    .alignItems(HorizontalAlign.Start)
+    .padding(PagePadding)
+    .backgroundColor('#fff')
+    .borderRadius(6)
+  }
+
+  @Builder
+  payOption(icon: Resource, subject: string, name: string) {
+    Row() {
+      Image(icon)
+        .width(22)
+        .height(22)
+      Text(subject)
+        .fontColor(Color.Black)
+        .fontSize(14)
+        .margin({ left: 8 })
+      Blank()
+      Image(this.selectedPayment == name ? $r('app.media.radio_button_checked') : $r('app.media.radio_button_normal'))
+        .width(22)
+        .width(22)
+    }
+    .width('100%')
+    .onClick(() => this.selectedPayment = name)
+
+  }
+}
+

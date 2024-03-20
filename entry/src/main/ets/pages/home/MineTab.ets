@@ -69,7 +69,7 @@ export default struct MineTab {
   list() {
     Column() {
       item($r("app.media.home_mine_order"), "我的订单", () => {
-        router.pushUrl({ url: 'pages/order/OrderPage' })
+        router.pushUrl({ url: 'pages/order/MyOrderPage' })
 
       })
       this.listDivider()

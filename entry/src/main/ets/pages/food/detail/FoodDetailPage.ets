@@ -6,6 +6,7 @@ import appApi from '../../../api/AppApi'
 import { divider, pageBackground, primary } from '../../../style/AppColor'
 import { PagePadding } from '../../../style/AppDimission'
 import TitleBar from '../../../widget/TitleBar'
+import openOrderPage from '../../order/OrderPage'
 import Food from '../Food'
 import CommentCard from './CommentCard'
 import DetailCard from './DetailCard'
@@ -98,6 +99,7 @@ struct FoodDetailPage {
           .fontColor(Color.White)
           .borderRadius(4)
           .backgroundColor(primary)
+          .onClick(() => openOrderPage(this.food))
       }
       .width('100%')
       .justifyContent(FlexAlign.End)
