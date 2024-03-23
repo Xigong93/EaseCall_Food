@@ -28,7 +28,7 @@ struct LoginPage {
   @Builder
   content() {
     Column({ space: 20 }) {
-      TextInput({ placeholder: '请输入账号' })
+      TextInput({ placeholder: '请输入账号', text: 'shop' })
         .width("100%")
         .height(45)
         .fontSize(14)
@@ -36,7 +36,7 @@ struct LoginPage {
         .onChange((value: string) => {
           this.account = value
         })
-      TextInput({ placeholder: '请输入密码' })
+      TextInput({ placeholder: '请输入密码', text: '123456' })
         .width("100%")
         .height(45)
         .fontSize(14)
@@ -77,7 +77,6 @@ struct LoginPage {
   }
 
   async performLogin() {
-    await delay(1000)
     const result = await this.viewModel.login(this.account, this.password)
     if (result == true) {
       showToast("登录成功")

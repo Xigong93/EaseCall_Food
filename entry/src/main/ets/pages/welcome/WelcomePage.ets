@@ -8,8 +8,8 @@ import Logger from '../../utils/Logger'
 struct WelcomePage {
   async aboutToAppear() {
     await delay(1000)
-    // let isLogin = await userManager.isLogin()
-    const isLogin = true
+    let isLogin = await userManager.isLogin()
+    // const isLogin = true
     new Logger("欢迎页").info(`首页启动，是否已登录:${isLogin}`)
     let page = isLogin ? 'pages/home/HomePage' : 'pages/login/LoginPage'
     router.replaceUrl({ url: page })

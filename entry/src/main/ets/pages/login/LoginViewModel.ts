@@ -1,12 +1,27 @@
+import httpRequest, { HttpResult, resultSuccess } from '../../net/HttpRequest'
 import { User, userManager } from '../../user/UserManager'
 
-export default  class LoginViewModel {
+export default class LoginViewModel {
   async login(account: string, password: string): Promise<string | true> {
-    if (account == "admin" && password == "123456") {
-      let user: User = { id: "0", name: "admin", token: "admin_token" }
-      await userManager.login(user)
-      return true;
+    const form = {
+      username: account,
+      password: password
     }
-    return "账号或密码不正确"
+    const result: HttpResult = await httpRequest.post(`web/app/loginApp.do`, form)
+    if (!result) {
+      return "网络错误,请重试"
+    } else if (resultSuccess(result)) {
+      this.saveUser(account)
+      return true
+    } else {
+      return "账号或密码不正确"
+    }
+  }
+
+  async saveUser(account: string) {
+    const user: User = {
+      name: account, id: "01", token: "unknown"
+    }
+    userManager.login(user)
   }
 }
