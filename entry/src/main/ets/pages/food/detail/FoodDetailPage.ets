@@ -8,6 +8,7 @@ import { PagePadding } from '../../../style/AppDimission'
 import TitleBar from '../../../widget/TitleBar'
 import openOrderPage from '../../order/OrderPage'
 import Food from '../Food'
+import foodApi from '../FoodApi'
 import CommentCard from './CommentCard'
 import DetailCard from './DetailCard'
 
@@ -22,7 +23,12 @@ export function openFoodDetailPage(food: Food) {
 @Entry
 @Component
 struct FoodDetailPage {
-  private readonly food: Food = appApi.getSampleFood()
+  @State
+  private food: Food = appApi.getSampleFood()
+
+  aboutToAppear() {
+    this.food = router.getParams()["food"]
+  }
 
   build() {
     Column() {
@@ -38,12 +44,13 @@ struct FoodDetailPage {
   content() {
     Scroll() {
       Column() {
-        Image($r("app.media.food1"))
+        Image(this.food.image)
           .width('100%')
+          .backgroundColor(pageBackground)
           .aspectRatio(16 / 9)
         this.infoCard()
         this.divider()
-        DetailCard()
+        DetailCard({ food: this.food })
         this.divider()
         CommentCard()
         Row().height(PagePadding)
@@ -68,7 +75,7 @@ struct FoodDetailPage {
   infoCard() {
     Column({ space: 10 }) {
       Row() {
-        Text("香辣炒虾尾（30颗，颗颗Q弹~够香够辣，不好吃全额退款")
+        Text(this.food.name)
           .fontColor(Color.Black)
           .fontWeight(FontWeight.Medium)
           .fontSize(18)

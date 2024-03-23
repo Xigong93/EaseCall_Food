@@ -1,3 +1,4 @@
+import appApi from '../../api/AppApi'
 import { pageBackground, primary } from '../../style/AppColor'
 import { PagePadding } from '../../style/AppDimission'
 import TitleBar from '../../widget/TitleBar'
@@ -42,7 +43,7 @@ class Order {
 @Component
 struct OrderCell {
   private order: Order = {
-    food: { name: "香辣炒虾尾", image: "app.media.food1", price: 68 },
+    food: appApi.getSampleFood(),
     money: 11,
     date: '2024-03-15 20:02'
   }

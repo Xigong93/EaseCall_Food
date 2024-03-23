@@ -1,17 +1,18 @@
-import { auxiliary, primary } from '../../style/AppColor'
+import appApi from '../../api/AppApi'
+import { auxiliary, pageBackground, primary } from '../../style/AppColor'
 import { openFoodDetailPage } from './detail/FoodDetailPage'
 import Food from './Food'
 
 @Preview
 @Component
 export default struct FoodCell {
-  private food: Food = { name: "香辣炒虾尾", image: "app.media.food1", price: 68 }
+  private food: Food = appApi.getSampleFood()
 
   build() {
-
     Row() {
-      Image($r("app.media.food1"))
+      Image(this.food.image)
         .width(120)
+        .backgroundColor(pageBackground)
         .height(80)
         .borderRadius(6)
       this.textArea()

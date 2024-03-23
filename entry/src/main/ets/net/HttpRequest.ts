@@ -55,11 +55,12 @@ const httpRequest = new HttpRequest()
 export default httpRequest
 
 
-export class HttpResult {
+export class HttpResult<T> {
   readonly code: number
   readonly msg: string
+  readonly data?:T
 }
 
-export function resultSuccess(result: HttpResult): boolean {
+export function resultSuccess(result: HttpResult<any>): boolean {
   return result.code == 200
 }

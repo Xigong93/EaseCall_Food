@@ -6,9 +6,11 @@ import Food from '../pages/food/Food'
 class AppApi {
   getSampleFood(): Food {
     return {
+      id: 0,
       name: "必胜客",
       price: 89,
-      image: "a"
+      image: "a",
+      type: "a"
     }
   }
 

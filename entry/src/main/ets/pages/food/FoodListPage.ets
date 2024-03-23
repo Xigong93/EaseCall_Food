@@ -7,6 +7,7 @@ import TitleBar from '../../widget/TitleBar'
 import Food from './Food'
 import FoodCell from './FoodCell'
 import Logger from '../../utils/Logger'
+import foodApi from './FoodApi'
 
 export default function openFoodList(title: string, image: Resource) {
   const params = {
@@ -22,6 +23,13 @@ const logger = new Logger("商品列表")
 @Entry
 @Component
 struct FoodListPage {
+  @State
+  private foods: Array<Food> = []
+
+  async aboutToAppear() {
+    this.foods = await foodApi.getFoods()
+  }
+
   getTitle(): string {
     return router.getParams()["title"] ?? "美食"
   }
@@ -40,9 +48,9 @@ struct FoodListPage {
             .borderRadius(6)
         }
 
-        ForEach(foods, (item: Food) => {
+        ForEach(this.foods, (item: Food) => {
           ListItem() {
-            FoodCell()
+            FoodCell({ food: item })
           }
         })
         ListItem()
@@ -56,5 +64,3 @@ struct FoodListPage {
     .backgroundColor(pageBackground)
   }
 }
-
-const foods = appApi.getFoods()

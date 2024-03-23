@@ -8,11 +8,26 @@ import FoodCell from '../food/FoodCell'
 import { pageBackground } from '../../style/AppColor'
 import { openFoodDetailPage } from '../food/detail/FoodDetailPage'
 import openFoodList from '../food/FoodListPage'
+import foodApi from '../food/FoodApi'
+import Logger from '../../utils/Logger'
 
+const logger = new Logger("外卖Tab")
 
 @Preview
 @Component
 export default struct DeliveryTab {
+  @State
+  private foods: Array<Food> = []
+
+  async aboutToAppear() {
+    logger.info("页面可见")
+    this.foods = await foodApi.getFoods()
+  }
+
+  aboutToDisappear() {
+    logger.info("页面销毁")
+  }
+
   build() {
     Column() {
       SearchBox()
@@ -22,9 +37,9 @@ export default struct DeliveryTab {
           this.header()
         }
 
-        ForEach(foods, (item: Food) => {
+        ForEach(this.foods, (item: Food) => {
           ListItem() {
-            FoodCell()
+            FoodCell({ food: item })
           }
         })
         ListItem()
@@ -101,8 +116,6 @@ function banner() {
   .height(120)
   .borderRadius(8)
 }
-
-const foods = appApi.getFoods()
 
 
 @Preview

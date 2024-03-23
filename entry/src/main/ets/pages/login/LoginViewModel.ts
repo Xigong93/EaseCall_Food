@@ -7,7 +7,7 @@ export default class LoginViewModel {
       username: account,
       password: password
     }
-    const result: HttpResult = await httpRequest.post(`web/app/loginApp.do`, form)
+    const result: HttpResult<void> = await httpRequest.post(`web/app/loginApp.do`, form)
     if (!result) {
       return "网络错误,请重试"
     } else if (resultSuccess(result)) {

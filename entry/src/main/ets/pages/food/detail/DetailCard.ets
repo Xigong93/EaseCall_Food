@@ -1,7 +1,11 @@
 import { PagePadding } from '../../../style/AppDimission'
+import Food from '../Food'
+
 @Preview
 @Component
 export default struct DetailCard {
+  private food: Food
+
   build() {
     Column() {
       Text("详情")
@@ -12,10 +16,10 @@ export default struct DetailCard {
 
       Column({ space: 8 }) {
 
-        this.rowInfo("主料", "虾尾")
+        this.rowInfo("主料", this.food.name)
         this.rowInfo("菜系", "其它菜系")
-        this.rowInfo("分量", "2人份")
-        this.rowInfo("口味", "蒜香")
+        this.rowInfo("分量", "1人份")
+        this.rowInfo("口味", "正常")
       }
       .margin({ top: 12 })
       .alignItems(HorizontalAlign.Start)
