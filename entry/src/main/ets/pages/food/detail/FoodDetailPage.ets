@@ -89,7 +89,7 @@ struct FoodDetailPage {
         Text(`￥${this.food.price}`)
           .fontSize(24)
           .fontColor(Color.Red)
-        Text(`￥${this.food.price * 1.1}`)
+        Text(`￥${(this.food.price * 1.1).toFixed(1)}`)
           .fontSize(12)
           .decoration({ type: TextDecorationType.LineThrough })
           .fontColor('#7a7a7a')

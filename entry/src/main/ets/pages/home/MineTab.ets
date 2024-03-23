@@ -8,7 +8,8 @@ import HorizontalLine from '../../widget/HorizontalLine'
 @Preview
 @Component
 export default struct MineTab {
-  private user?: User
+  @State
+  private user: User = { id: "0", name: "未登录", token: "" }
 
   async aboutToAppear() {
     this.user = await userManager.getUser()

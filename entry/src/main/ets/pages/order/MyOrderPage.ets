@@ -1,32 +1,43 @@
-import appApi from '../../api/AppApi'
 import { pageBackground, primary } from '../../style/AppColor'
 import { PagePadding } from '../../style/AppDimission'
+import PageStateView, { ContentPage, EmptyPage, LoadingPage } from '../../widget/PageState'
 import TitleBar from '../../widget/TitleBar'
-import Food from '../food/Food'
 import openOrderDetail from './OrderDetailPage'
+import OrderViewModel, { Order } from './OrderViewModel'
 
 @Entry
 @Component
 export default struct MyOrderPage {
+  @State
+  private orders: Array<Order> = []
+  @State
+  private pageState: number = LoadingPage
+  private viewModel = new OrderViewModel()
+
+  async aboutToAppear() {
+    this.pageState = LoadingPage
+    this.orders = await this.viewModel.getOrderList()
+    if (this.orders.length > 0) {
+      this.pageState = ContentPage
+    } else {
+      this.pageState = EmptyPage
+    }
+  }
+
   build() {
     Column() {
       TitleBar({ title: "我的订单" })
-      List({ space: 15 }) {
-        ListItem() {
-          OrderCell()
+      PageStateView({ pageState: this.pageState }) {
+        List() {
+          ForEach(this.orders, (order) => {
+            ListItem() {
+              OrderCell({ order })
+            }
+            .margin({ top: 15 })
+          })
         }
-        .margin({ top: 20 })
-
-        ListItem() {
-          OrderCell()
-        }
-
-        ListItem() {
-          OrderCell()
-        }
+        .padding({ left: PagePadding, right: PagePadding })
       }
-      .padding({ left: PagePadding, right: PagePadding })
-
     }
     .width('100%')
     .height('100%')
@@ -34,36 +45,28 @@ export default struct MyOrderPage {
   }
 }
 
-class Order {
-  readonly food: Food
-  money: number
-  date: string
-}
 
 @Component
 struct OrderCell {
-  private order: Order = {
-    food: appApi.getSampleFood(),
-    money: 11,
-    date: '2024-03-15 20:02'
-  }
+  private order: Order
 
   build() {
 
     Column() {
       Row() {
-        Text(`下单时间: ${(this.order.date)}`)
+        Text(`下单时间:${this.order.orderDate} `)
           .fontSize(12)
         Blank()
-        Text("配送中")
+        Text(this.order.status)
           .fontSize(14)
       }
       .width('100%')
 
       Row() {
-        Image($r("app.media.food1"))
+        Image(this.order.food.photoPath)
           .width(120)
           .height(80)
+          .backgroundColor(pageBackground)
           .borderRadius(6)
         this.textArea()
       }
@@ -82,13 +85,13 @@ struct OrderCell {
   @Builder
   textArea() {
     Column() {
-      Text(this.order.food.name)
+      Text(this.order.food.foodName)
         .textAlign(TextAlign.Start) //zu
         .fontSize(12)
         .fontWeight(FontWeight.Regular)
       Text(`数量: 1`)
         .fontSize(12)
-      Text(`共计: ￥${(this.order.money)}`)
+      Text(`共计: ￥${(this.order.totalAmount)}`)
         .fontSize(12)
 
       // .width(1)
