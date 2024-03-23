@@ -1,5 +1,6 @@
 import httpRequest, { HttpResult, resultSuccess } from '../../net/HttpRequest'
 import Food from '../food/Food'
+import { FoodResp } from '../food/FoodApi'
 
 export default class OrderViewModel {
   /**
@@ -17,12 +18,12 @@ export default class OrderViewModel {
    * @param food
    * @returns
    */
-  async order(foodId: string, money: number): Promise<boolean> {
+  async order(foodId: number, money: number): Promise<boolean> {
     const form = {
-      id: foodId,
-      totalAmount: money
+      productId: `${foodId}`,
+      totalAmount: `${money}`
     }
-    const result: HttpResult<void> = await httpRequest.post("web/app/upOrder.do", form)
+    const result: HttpResult<void> = await httpRequest.post(`web/app/upOrder.do`, form)
     return result && resultSuccess(result)
   }
 }
@@ -48,16 +49,6 @@ export class Order {
   /**
    * 商品
    */
-  readonly food: Staff
+  readonly food: FoodResp
 }
 
-class Staff {
-  readonly foodId: number
-  readonly foodName: string
-  // 类型
-  readonly foodType: string
-  // 图片
-  readonly photoPath: string
-  // 价格
-  readonly price: number
-}

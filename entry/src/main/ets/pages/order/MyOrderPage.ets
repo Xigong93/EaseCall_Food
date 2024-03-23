@@ -1,3 +1,4 @@
+import router from '@ohos.router'
 import { pageBackground, primary } from '../../style/AppColor'
 import { PagePadding } from '../../style/AppDimission'
 import PageStateView, { ContentPage, EmptyPage, LoadingPage } from '../../widget/PageState'
@@ -5,9 +6,15 @@ import TitleBar from '../../widget/TitleBar'
 import openOrderDetail from './OrderDetailPage'
 import OrderViewModel, { Order } from './OrderViewModel'
 
+export default function openMyOrderPage() {
+  router.pushUrl({
+    url: "pages/order/MyOrderPage"
+  })
+}
+
 @Entry
 @Component
-export default struct MyOrderPage {
+struct MyOrderPage {
   @State
   private orders: Array<Order> = []
   @State
@@ -78,7 +85,7 @@ struct OrderCell {
     .padding({ left: 12, right: 12, top: 12, bottom: 12 })
     .backgroundColor('#fff')
     .borderRadius(6)
-    .onClick(() => openOrderDetail("a"))
+    .onClick(() => openOrderDetail(this.order))
 
   }
 

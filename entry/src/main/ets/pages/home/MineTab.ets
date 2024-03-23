@@ -4,6 +4,7 @@ import { PagePadding } from '../../style/AppDimission'
 import { User, userManager } from '../../user/UserManager'
 import showToast from '../../utils/ToastUtil'
 import HorizontalLine from '../../widget/HorizontalLine'
+import openMyOrderPage from '../order/MyOrderPage'
 
 @Preview
 @Component
@@ -70,8 +71,7 @@ export default struct MineTab {
   list() {
     Column() {
       item($r("app.media.home_mine_order"), "我的订单", () => {
-        router.pushUrl({ url: 'pages/order/MyOrderPage' })
-
+        openMyOrderPage()
       })
       this.listDivider()
       item($r("app.media.home_mine_clear"), "清除缓存", () => {

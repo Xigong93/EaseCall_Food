@@ -3,13 +3,16 @@ import { grayFontColor, pageBackground, primary } from '../../style/AppColor'
 import { PagePadding } from '../../style/AppDimission'
 import { VerticalSpace } from '../../widget/Space'
 import TitleBar from '../../widget/TitleBar'
+import Food from '../food/Food'
+import { createFood } from '../food/FoodApi'
 import OrderContentCard from './OrderContentCard'
+import { Order } from './OrderViewModel'
 
-export default function openOrderDetail(id: string) {
+export default function openOrderDetail(order: Order) {
   router.pushUrl({
     url: "pages/order/OrderDetailPage",
     params: {
-      orderId: id
+      order: order
     }
   })
 }
@@ -17,6 +20,13 @@ export default function openOrderDetail(id: string) {
 @Entry
 @Component
 struct OrderDetailPage {
+  @State
+  private order: Order = new Order()
+
+  aboutToAppear() {
+    this.order = router.getParams()["order"]
+  }
+
   build() {
     Column() {
       TitleBar({ title: "订单详情" })
@@ -24,8 +34,8 @@ struct OrderDetailPage {
         Column({ space: 14 }) {
           StageBar()
             .margin({ top: 20 })
-          OrderContentCard()
-          OrderInfoCard()
+          OrderContentCard({ food: createFood(this.order.food) })
+          OrderInfoCard({ order: this.order })
           VerticalSpace()
         }
         .alignItems(HorizontalAlign.Start)
@@ -45,15 +55,17 @@ struct OrderDetailPage {
 
 @Component
 struct OrderInfoCard {
+  private order: Order
+
   build() {
     Column({ space: 14 }) {
       this.itemInfo("期望时间", "立即配送")
       this.itemInfo("配送地址", "天津市河西区平江道62号\n小明 18588886666")
       this.itemInfo("配送服务", "商家自配")
       Divider()
-      this.itemInfo("订单号码", "3009 9345 4122 1882 25")
-      this.itemInfo("下单时间", "2024-03-20 21:39:58")
-      this.itemInfo("支付方式", "微信支付")
+      this.itemInfo("订单号码", this.order.orderNo)
+      this.itemInfo("下单时间", this.order.orderDate)
+      this.itemInfo("支付方式", "在线支付")
       this.itemInfo("餐具数量", "1套")
 
     }

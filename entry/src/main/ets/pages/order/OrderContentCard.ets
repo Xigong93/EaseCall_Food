@@ -1,19 +1,20 @@
 import appApi from '../../api/AppApi'
+import { pageBackground } from '../../style/AppColor'
 import { PagePadding } from '../../style/AppDimission'
 import Food from '../food/Food'
 
 @Preview
 @Component
 export default struct OrderContentCard {
-  private food: Food = appApi.getSampleFood()
+  private food: Food
 
   build() {
     Column({ space: 14 }) {
       cardTitle("商品信息")
-      FoodCard()
+      FoodCard({ food: this.food })
       Divider()
       this.priceItem("打包费", "￥2")
-      this.priceItem("配送费", "￥3.5")
+      this.priceItem("配送费", "￥3")
       this.negativePrice("平台红包", "-￥5")
       Divider()
       this.totalPrice()
@@ -47,7 +48,7 @@ export default struct OrderContentCard {
         .fontColor(Color.Black)
         .fontSize(18)
       Blank()
-      Text(`￥${this.food.price + 2 + 3.5 - 5}`)
+      Text(`￥${this.food.price}`)
         .fontColor(Color.Black)
         .fontSize(18)
     }
@@ -78,12 +79,13 @@ export default struct OrderContentCard {
 
 @Component
 struct FoodCard {
-  private food: Food = appApi.getSampleFood()
+  private food: Food
 
   build() {
     Row() {
-      Image($r("app.media.food1"))
+      Image(this.food.image)
         .width(120)
+        .backgroundColor(pageBackground)
         .height('100%')
         .borderRadius(6)
       this.textArea()
@@ -98,7 +100,7 @@ struct FoodCard {
         .textAlign(TextAlign.Start) //zu
         .fontSize(14)
         .fontWeight(FontWeight.Regular)
-      Text("320克 不辣")
+      Text("320克")
         .fontSize(12)
         .fontColor("#7a7a7a")
       Text(`￥${this.food.price}`)

@@ -16,11 +16,10 @@ class FoodApi {
     const foods = await this.getFoods()
     return foods.filter((f: Food) => f.type == type)
   }
-
 }
 
 
-class FoodResp {
+export class FoodResp {
   readonly foodId: number
   readonly foodName: string
   // 类型
@@ -31,7 +30,7 @@ class FoodResp {
   readonly price: number
 }
 
-function createFood(food: FoodResp): Food {
+export function createFood(food: FoodResp): Food {
   return {
     id: food.foodId,
     name: food.foodName,

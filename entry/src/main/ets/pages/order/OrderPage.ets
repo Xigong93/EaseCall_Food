@@ -1,12 +1,15 @@
 import router from '@ohos.router'
+import appApi from '../../api/AppApi'
 import { divider, grayFontColor, pageBackground, primary } from '../../style/AppColor'
 import { PagePadding } from '../../style/AppDimission'
 import showToast from '../../utils/ToastUtil'
 import TitleBar from '../../widget/TitleBar'
 import { openFoodDetailPage } from '../food/detail/FoodDetailPage'
 import Food from '../food/Food'
+import openMyOrderPage from './MyOrderPage'
 import OrderContentCard from './OrderContentCard'
 import openOrderDetail from './OrderDetailPage'
+import OrderViewModel from './OrderViewModel'
 
 export default function openOrderPage(food: Food) {
   router.pushUrl(
@@ -22,13 +25,21 @@ export default function openOrderPage(food: Food) {
 @Entry
 @Component
 struct OrderPage {
+  @State
+  private food: Food = appApi.getSampleFood()
+  private viewModel = new OrderViewModel()
+
+  aboutToAppear() {
+    this.food = router.getParams()["food"]
+  }
+
   build() {
     Column() {
       TitleBar({ title: "订单" })
       Scroll() {
         Column({ space: 14 }) {
           AddressCard().margin({ top: 14 })
-          OrderContentCard()
+          OrderContentCard({ food: this.food })
           PaymentCard()
           this.payButton()
         }
@@ -56,9 +67,11 @@ struct OrderPage {
       .onClick(() => this.paySuccess())
   }
 
-  paySuccess() {
+  async paySuccess() {
+    this.viewModel.order(this.food.id, this.food.price)
     showToast("支付成功")
-    openOrderDetail("0")
+    router.back()
+    openMyOrderPage()
   }
 }
 
