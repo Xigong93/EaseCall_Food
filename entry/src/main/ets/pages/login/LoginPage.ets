@@ -14,6 +14,8 @@ import { delay } from '../../utils/PromiseUtil'
 struct LoginPage {
   private account: string = ""
   private password: string = ""
+  @State
+  private loading: boolean = false
   private viewModel = new LoginViewModel()
 
   build() {
@@ -46,14 +48,34 @@ struct LoginPage {
         .onChange((value: string) => {
           this.password = value
         })
-      Button("登录")
-        .width(150)
-          // .margin({ top: 30 })
-        .backgroundColor(primary)
-        .onClick(() => this.login())
+      if (this.loading) {
+        this.loadingPage()
+      } else {
+        Button("登录")
+          .width(150)
+            // .margin({ top: 30 })
+          .backgroundColor(primary)
+          .onClick(() => this.login())
+      }
     }
     .padding({ left: 20, right: 20 })
     .margin({ top: 40 })
+  }
+
+  @Builder
+  loadingPage() {
+    Column() {
+      Row() {
+        LoadingProgress()
+          .width(50)
+          .height(50)
+        Text("登录中")
+      }
+      .alignItems(VerticalAlign.Center)
+    }
+    .width('100%')
+    .justifyContent(FlexAlign.Center)
+    .alignItems(HorizontalAlign.Center)
   }
 
   login() {
@@ -77,6 +99,7 @@ struct LoginPage {
   }
 
   async performLogin() {
+    this.loading = true
     const result = await this.viewModel.login(this.account, this.password)
     if (result == true) {
       showToast("登录成功")
@@ -84,6 +107,7 @@ struct LoginPage {
     } else {
       showToast(result)
     }
+    this.loading = false
   }
 }
 

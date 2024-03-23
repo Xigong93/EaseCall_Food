@@ -10,6 +10,7 @@ import { openFoodDetailPage } from '../food/detail/FoodDetailPage'
 import openFoodList from '../food/FoodListPage'
 import foodApi from '../food/FoodApi'
 import Logger from '../../utils/Logger'
+import PageStateView, { ContentPage, LoadingPage, EmptyPage } from '../../widget/PageState'
 
 const logger = new Logger("外卖Tab")
 
@@ -18,10 +19,18 @@ const logger = new Logger("外卖Tab")
 export default struct DeliveryTab {
   @State
   private foods: Array<Food> = []
+  @State
+  private pageState: number = LoadingPage
 
   async aboutToAppear() {
     logger.info("页面可见")
+    this.pageState = LoadingPage
     this.foods = await foodApi.getFoods()
+    if (this.foods.length > 0) {
+      this.pageState = ContentPage
+    } else {
+      this.pageState = EmptyPage
+    }
   }
 
   aboutToDisappear() {
@@ -30,22 +39,24 @@ export default struct DeliveryTab {
 
   build() {
     Column() {
-      SearchBox()
-        .margin(PagePadding)
-      List({ space: 20 }) {
-        ListItem() {
-          this.header()
-        }
-
-        ForEach(this.foods, (item: Food) => {
+      PageStateView({ pageState: this.pageState }) {
+        SearchBox()
+          .margin(PagePadding)
+        List({ space: 20 }) {
           ListItem() {
-            FoodCell({ food: item })
+            this.header()
           }
-        })
-        ListItem()
+
+          ForEach(this.foods, (item: Food) => {
+            ListItem() {
+              FoodCell({ food: item })
+            }
+          })
+          ListItem()
+        }
+        .layoutWeight(1)
+        .padding({ left: PagePadding, right: PagePadding })
       }
-      .layoutWeight(1)
-      .padding({ left: PagePadding, right: PagePadding })
 
     }
     .backgroundColor(pageBackground)

@@ -8,6 +8,7 @@ import Food from './Food'
 import FoodCell from './FoodCell'
 import Logger from '../../utils/Logger'
 import foodApi from './FoodApi'
+import PageStateView, { ContentPage, EmptyPage, LoadingPage } from '../../widget/PageState'
 
 export default function openFoodList(title: string, image: Resource) {
   const params = {
@@ -25,9 +26,18 @@ const logger = new Logger("商品列表")
 struct FoodListPage {
   @State
   private foods: Array<Food> = []
+  @State
+  private pageState: number = LoadingPage
 
   async aboutToAppear() {
+    this.pageState = LoadingPage
     this.foods = await foodApi.getFoods()
+    if (this.foods.length > 0) {
+      this.pageState = ContentPage
+    } else {
+      this.pageState = EmptyPage
+    }
+
   }
 
   getTitle(): string {
@@ -41,22 +51,25 @@ struct FoodListPage {
   build() {
     Column() {
       TitleBar({ title: this.getTitle() })
-      List({ space: 15 }) {
-        ListItem()
-        ListItem() {
-          Image(this.getImage())
-            .borderRadius(6)
-        }
 
-        ForEach(this.foods, (item: Food) => {
+      PageStateView({ pageState: this.pageState }) {
+        List({ space: 15 }) {
+          ListItem()
           ListItem() {
-            FoodCell({ food: item })
+            Image(this.getImage())
+              .borderRadius(6)
           }
-        })
-        ListItem()
+
+          ForEach(this.foods, (item: Food) => {
+            ListItem() {
+              FoodCell({ food: item })
+            }
+          })
+          ListItem()
+        }
+        .layoutWeight(1)
+        .padding({ left: PagePadding, right: PagePadding })
       }
-      .layoutWeight(1)
-      .padding({ left: PagePadding, right: PagePadding })
 
     }
     .width('100%')
