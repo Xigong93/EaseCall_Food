@@ -70,7 +70,10 @@ export default struct DeliveryTab {
     Column({ space: 20 }) {
 
       functionArea()
-      banner()
+      banner((index) => {
+        const food = this.foods[Math.min(index, this.foods.length - 1)]
+        openFoodDetailPage(food)
+      })
     }
     .margin({ top: 10 })
   }
@@ -112,13 +115,13 @@ $r("app.media.banner6")
 ]
 
 @Builder
-function banner() {
+function banner(onClick: (index: number) => void) {
 
   Swiper() { //轮播
-    ForEach(bannerImg, (img: Resource) => {
+    ForEach(bannerImg, (img: Resource, index: number) => {
       Image(img)
         .borderRadius(8)
-        .onClick(() => openFoodDetailPage(appApi.getSampleFood()))
+        .onClick(() => onClick(index))
 
     })
   }
