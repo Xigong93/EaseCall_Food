@@ -5,6 +5,11 @@ import Food from './Food'
  * 各种接口
  */
 class FoodApi {
+  async searchFood(keyword: string): Promise<Array<Food>> {
+    const foods = await this.getFoods()
+    return foods.filter((f) => f.name.includes(keyword))
+  }
+
   async getFoods(): Promise<Array<Food>> {
     const result: HttpResult<Array<FoodResp>> = await httpRequest.post("web/app/getFoodList.do")
     const origin = result.data ?? []
