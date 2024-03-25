@@ -2,13 +2,15 @@ import router from '@ohos.router'
 import appApi from '../../api/AppApi'
 import { divider, grayFontColor, pageBackground, primary } from '../../style/AppColor'
 import { PagePadding } from '../../style/AppDimission'
+import { delay } from '../../utils/PromiseUtil'
 import showToast from '../../utils/ToastUtil'
+import Loading from '../../widget/Loading'
 import TitleBar from '../../widget/TitleBar'
 import { openFoodDetailPage } from '../food/detail/FoodDetailPage'
 import Food from '../food/Food'
-import openMyOrderPage from './MyOrderPage'
+import { replaceMyOrderPage } from './MyOrderPage'
 import OrderContentCard from './OrderContentCard'
-import openOrderDetail from './OrderDetailPage'
+import openOrderDetail, { replaceToOrderDetailPage } from './OrderDetailPage'
 import OrderViewModel from './OrderViewModel'
 
 export default function openOrderPage(food: Food) {
@@ -26,6 +28,8 @@ export default function openOrderPage(food: Food) {
 @Component
 struct OrderPage {
   @State
+  private loading: boolean = false
+  @State
   private food: Food = appApi.getSampleFood()
   private viewModel = new OrderViewModel()
 
@@ -36,19 +40,27 @@ struct OrderPage {
   build() {
     Column() {
       TitleBar({ title: "订单" })
-      Scroll() {
-        Column({ space: 14 }) {
-          AddressCard().margin({ top: 14 })
-          OrderContentCard({ food: this.food })
-          PaymentCard()
-          this.payButton()
+      Stack() {
+        Scroll() {
+          Column({ space: 14 }) {
+            AddressCard().margin({ top: 14 })
+            OrderContentCard({ food: this.food })
+            PaymentCard()
+            this.payButton()
+          }
+          .width('100%')
+
         }
         .width('100%')
+        .height('100%')
+        .padding({ left: PagePadding, right: PagePadding })
 
+        if (this.loading) {
+          Loading({ msg: "支付中" })
+        }
       }
       .width('100%')
       .layoutWeight(1)
-      .padding({ left: PagePadding, right: PagePadding })
 
     }
     .width('100%')
@@ -64,14 +76,26 @@ struct OrderPage {
       .type(ButtonType.Normal)
       .backgroundColor(primary)
       .borderRadius(8)
-      .onClick(() => this.paySuccess())
+      .onClick(() => this.performOrder())
   }
 
-  async paySuccess() {
-    this.viewModel.order(this.food.id, this.food.price)
-    showToast("支付成功")
-    router.back()
-    openMyOrderPage()
+  async performOrder() {
+    this.loading = true
+    try {
+      await delay(1000)
+      const success = await this.viewModel.order(this.food.id, this.food.price)
+      if (success) {
+        showToast("支付成功")
+        delay(200)
+        router.back()
+        replaceMyOrderPage()
+      } else {
+        showToast("网络错误请重试")
+      }
+
+    } finally {
+      this.loading = false
+    }
   }
 }
 

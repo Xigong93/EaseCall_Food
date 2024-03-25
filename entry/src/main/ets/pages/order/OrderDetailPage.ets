@@ -1,4 +1,5 @@
 import router from '@ohos.router'
+import { RouterOptions } from '@system.router'
 import { grayFontColor, pageBackground, primary } from '../../style/AppColor'
 import { PagePadding } from '../../style/AppDimission'
 import { VerticalSpace } from '../../widget/Space'
@@ -8,8 +9,17 @@ import { createFood } from '../food/FoodApi'
 import OrderContentCard from './OrderContentCard'
 import { Order } from './OrderViewModel'
 
-export default function openOrderDetail(order: Order) {
+export default function openOrderDetailPage(order: Order): void {
   router.pushUrl({
+    url: "pages/order/OrderDetailPage",
+    params: {
+      order: order
+    }
+  })
+}
+
+export function replaceToOrderDetailPage(order: Order): void {
+  router.replaceUrl({
     url: "pages/order/OrderDetailPage",
     params: {
       order: order

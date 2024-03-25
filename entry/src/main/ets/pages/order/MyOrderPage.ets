@@ -12,6 +12,12 @@ export default function openMyOrderPage() {
   })
 }
 
+export function replaceMyOrderPage() {
+  router.replaceUrl({
+    url: "pages/order/MyOrderPage"
+  })
+}
+
 @Entry
 @Component
 struct MyOrderPage {
