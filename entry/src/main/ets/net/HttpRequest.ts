@@ -58,9 +58,22 @@ export default httpRequest
 export class HttpResult<T> {
   readonly code: number
   readonly msg: string
-  readonly data?:T
+  readonly data?: T
 }
 
 export function resultSuccess(result: HttpResult<any>): boolean {
   return result.code == 200
+}
+
+/**
+ * 格式化图片url
+ * @param url
+ * @returns
+ */
+export function formatImgUrl(url: string): string {
+  if (url.startsWith("http")) {
+    return url;
+  } else {
+    return `${BASE_URL}file/%E5%9B%BE%E7%89%87/${url}`
+  }
 }

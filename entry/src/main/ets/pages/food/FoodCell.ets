@@ -1,4 +1,5 @@
 import appApi from '../../api/AppApi'
+import { formatImgUrl } from '../../net/HttpRequest'
 import { auxiliary, pageBackground, primary } from '../../style/AppColor'
 import { openFoodDetailPage } from './detail/FoodDetailPage'
 import Food from './Food'
@@ -10,7 +11,7 @@ export default struct FoodCell {
 
   build() {
     Row() {
-      Image(this.food.image)
+      Image(formatImgUrl(this.food.image))
         .width(120)
         .backgroundColor(pageBackground)
         .height(80)

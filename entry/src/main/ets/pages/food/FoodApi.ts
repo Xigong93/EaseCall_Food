@@ -1,4 +1,4 @@
-import httpRequest, { HttpResult } from '../../net/HttpRequest'
+import httpRequest, { formatImgUrl, HttpResult } from '../../net/HttpRequest'
 import Food from './Food'
 
 /**
@@ -40,7 +40,7 @@ export function createFood(food: FoodResp): Food {
     id: food.foodId,
     name: food.foodName,
     price: food.price,
-    image: food.photoPath,
+    image: formatImgUrl(food.photoPath),
     type: food.foodType
   }
 }

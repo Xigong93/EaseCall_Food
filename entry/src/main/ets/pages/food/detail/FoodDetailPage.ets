@@ -3,6 +3,7 @@
  */
 import router from '@ohos.router'
 import appApi from '../../../api/AppApi'
+import { formatImgUrl } from '../../../net/HttpRequest'
 import { divider, pageBackground, primary } from '../../../style/AppColor'
 import { PagePadding } from '../../../style/AppDimission'
 import TitleBar from '../../../widget/TitleBar'
@@ -44,7 +45,7 @@ struct FoodDetailPage {
   content() {
     Scroll() {
       Column() {
-        Image(this.food.image)
+        Image(formatImgUrl(this.food.image))
           .width('100%')
           .backgroundColor(pageBackground)
           .aspectRatio(16 / 9)

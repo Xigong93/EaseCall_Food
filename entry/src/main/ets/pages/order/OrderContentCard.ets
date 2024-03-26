@@ -1,4 +1,5 @@
 import appApi from '../../api/AppApi'
+import { formatImgUrl } from '../../net/HttpRequest'
 import { pageBackground } from '../../style/AppColor'
 import { PagePadding } from '../../style/AppDimission'
 import Food from '../food/Food'
@@ -83,7 +84,7 @@ struct FoodCard {
 
   build() {
     Row() {
-      Image(this.food.image)
+      Image(formatImgUrl(this.food.image))
         .width(120)
         .backgroundColor(pageBackground)
         .height('100%')
