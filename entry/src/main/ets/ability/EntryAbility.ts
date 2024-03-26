@@ -1,12 +1,14 @@
 import UIAbility from '@ohos.app.ability.UIAbility';
 import hilog from '@ohos.hilog';
 import window from '@ohos.window';
+import { syncTime } from '../pages/order/OnlineTime';
 import { installUiAbility } from '../utils/UiAbilityHolder'
 
 export default class EntryAbility extends UIAbility {
   onCreate(want, launchParam) {
     //  加载用户首选项
     installUiAbility(this)
+    syncTime()
     hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');
   }
 

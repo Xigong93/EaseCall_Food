@@ -4,6 +4,7 @@ import { PagePadding } from '../../style/AppDimission'
 import PageStateView, { ContentPage, EmptyPage, LoadingPage } from '../../widget/PageState'
 import TitleBar from '../../widget/TitleBar'
 import openOrderDetail from './OrderDetailPage'
+import { getOrderStateInfo, OrderStateDelivering, OrderStateFinished, OrderStatePreparing } from './OrderState'
 import OrderViewModel, { Order } from './OrderViewModel'
 
 export default function openMyOrderPage() {
@@ -27,8 +28,10 @@ struct MyOrderPage {
   private pageState: number = LoadingPage
   private viewModel = new OrderViewModel()
 
-  async aboutToAppear() {
-    this.pageState = LoadingPage
+  async onPageShow() {
+    if (this.orders.length == 0) {
+      this.pageState = LoadingPage
+    }
     this.orders = await this.viewModel.getOrderList()
     if (this.orders.length > 0) {
       this.pageState = ContentPage
@@ -70,7 +73,7 @@ struct OrderCell {
         Text(`下单时间:${this.order.orderDate} `)
           .fontSize(12)
         Blank()
-        Text(this.order.status)
+        Text(this.getOrderState())
           .fontSize(14)
       }
       .width('100%')
@@ -93,6 +96,17 @@ struct OrderCell {
     .borderRadius(6)
     .onClick(() => openOrderDetail(this.order))
 
+  }
+
+  getOrderState(): string {
+    const state = getOrderStateInfo(this.order).state
+    if (state == OrderStatePreparing) {
+      return "制作中"
+    } else if (state == OrderStateDelivering) {
+      return "配送中"
+    } else {
+      return "已完成"
+    }
   }
 
   @Builder

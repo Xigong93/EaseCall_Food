@@ -7,7 +7,7 @@ const logger = new Logger("HttpRequest")
 /**
  * 需要替换成自己电脑在区域网中的ip
  */
-const BASE_URL = "http://192.168.3.5:8000/"
+const BASE_URL = "http://192.168.3.131:8000/"
 
 class HttpRequest {
   private readonly client: Axios
