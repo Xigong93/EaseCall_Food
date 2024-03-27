@@ -31,7 +31,7 @@ export interface OrderStateInfo {
    * 预计到下一个状态的剩余时间,单位毫米
    */
   readonly leftMillis: number
-
+  readonly order: Order
 }
 
 /**
@@ -48,16 +48,19 @@ export function getOrderStateInfo(order: Order): OrderStateInfo {
   const diff = currentTime.getTime() - orderTime.getTime()
   if (diff >= 10 * minutesPerMillis) {
     return {
+      order,
       state: OrderStateFinished,
       leftMillis: 0
     }
   } else if (diff >= 5 * minutesPerMillis) {
     return {
+      order,
       state: OrderStateDelivering,
-      leftMillis: diff - 5 * minutesPerMillis
+      leftMillis: 10 * minutesPerMillis - diff
     }
   } else {
     return {
+      order,
       state: OrderStatePreparing,
       leftMillis: 5 * minutesPerMillis - diff
     }
@@ -65,4 +68,13 @@ export function getOrderStateInfo(order: Order): OrderStateInfo {
 }
 
 
-
+export function formatMilliseconds(milliseconds) {
+  const seconds = Math.floor(milliseconds / 1000);
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = seconds % 60;
+  if (minutes > 0) {
+    return `${minutes}分${remainingSeconds}秒`;
+  } else {
+    return `${remainingSeconds}秒`;
+  }
+}

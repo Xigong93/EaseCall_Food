@@ -4,6 +4,8 @@ import DeliveryTab from './DeliveryTab';
 import ShoppingCartTab from './ShoppingCartTab'
 import MineTab from './MineTab'
 import { divider, primary } from '../../style/AppColor';
+import DeliveryStateBar from './DeliveryStateBar';
+import { PagePadding } from '../../style/AppDimission';
 
 const normalColor = "#7a7a7a"
 /**
@@ -38,7 +40,23 @@ struct HomePage {
     Tabs({ barPosition: BarPosition.End, controller: this.barControl }) {
       // 外卖
       TabContent() {
-        DeliveryTab()
+        Stack() {
+          DeliveryTab()
+            .width('100%')
+            .height('100%')
+          Row() {
+            DeliveryStateBar()
+              .shadow({ radius: 5, color: Color.White, offsetX: 2, offsetY: 2 })
+              .margin({ bottom: 50, right: PagePadding })
+          }
+          .touchable(false)
+          .width('100%')
+          .height('100%')
+          .justifyContent(FlexAlign.End)
+          .alignItems(VerticalAlign.Bottom)
+        }
+        .width('100%')
+        .height('100%')
       }
       .tabBar(this.TabBarItem("外卖", $r("app.media.home_deliv_0"), $r("app.media.home_deliv_1"), 0))
 

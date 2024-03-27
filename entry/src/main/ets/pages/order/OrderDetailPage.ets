@@ -8,6 +8,7 @@ import Food from '../food/Food'
 import { createFood } from '../food/FoodApi'
 import OrderContentCard from './OrderContentCard'
 import {
+  formatMilliseconds,
   getOrderStateInfo,
   OrderStateDelivering,
   OrderStateFinished,
@@ -43,7 +44,7 @@ struct OrderDetailPage {
    * 订单状态
    */
   @State
-  private orderStateInfo: OrderStateInfo = { state: OrderStatePreparing, leftMillis: 0 }
+  private orderStateInfo: OrderStateInfo = { state: OrderStatePreparing, leftMillis: 0, order: this.order }
   private updateOrderTask: number
 
   aboutToAppear() {
@@ -258,13 +259,3 @@ struct StageBar {
   }
 }
 
-function formatMilliseconds(milliseconds) {
-  const seconds = Math.floor(milliseconds / 1000);
-  const minutes = Math.floor(seconds / 60);
-  const remainingSeconds = seconds % 60;
-  if (minutes > 0) {
-    return `${minutes}分${remainingSeconds}秒`;
-  } else {
-    return `${remainingSeconds}秒`;
-  }
-}
